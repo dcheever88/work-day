@@ -1,9 +1,9 @@
-// var now = dayjs();
-
-// document.getElementById("currentDay").innerHTML = (now.format("dddd, MMMM D YYYY"));
-
+// installs dayjs
 dayjs().format();
 
+today();
+
+// loop through schedule
 var day = [
     {id: 0, hour: "8:00", time: "08", meridiem: " am", reminder: ""}, 
     {id: 1, hour: "9:00", time: "09", meridiem: " am", reminder: ""}, 
@@ -21,21 +21,26 @@ var day = [
     {id: 13, hour: "9:00", time: "21", meridiem: " pm", reminder: ""},
 ]
 
+// calls and displays today's date
 function today() {
     var currentDate = (dayjs().format("dddd, MMMM D YYYY"));
     $("#currentDay").text(currentDate);
 }
 
-function saveRemind() {
+// saves task to local storage
+function saveTask() {
     localStorage.setItem("day", JSON.stringify(day));
 }
 
-function displayRemind() {
+// displays any tasks in local storage
+function displayTask() {
     day.forEach(function (_currentHour) {
         $(`#${_currentHour.id}`).val(_currentHour.reminder);
     })
 }
 
+
+// displays any prior tasks in local storage
 function init() {
     var storedPlan = JSON.parse(localStorage.getItem("day"));
 
@@ -43,13 +48,11 @@ function init() {
             day = storedPlan;
         }
 
-        saveRemind();
-        displayRemind();
-};
+        saveTask();
+        displayTask();
+}
 
-today();
-
-
+// displays hourly blocks for schedule
 day.forEach(function(currentHour) {
     var hourBlock = $("<form>").attr({
         "class": "row"});
@@ -97,11 +100,12 @@ day.forEach(function(currentHour) {
 
 init();
 
+
+// save button
 $(".saveBtn").on("click", function(event) {
     event.preventDefault();
     var savePlans = $(this).siblings(".description").children(".future").attr("id");
     day[savePlans].reminder = $(this).siblings(".description").children(".future").val();
-    console.log(savePlans);
-    saveRemind;
-    displayRemind;
+    saveTask();
+    displayTask();
 })
