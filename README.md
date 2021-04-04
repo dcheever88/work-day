@@ -1,1 +1,3 @@
-# Work Day Scheduler Starter Code
+# Work Day Scheduler
+
+* Daily Planner Organizes Tasks by the Hour
