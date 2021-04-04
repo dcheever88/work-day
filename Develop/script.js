@@ -2,39 +2,39 @@
 
 // document.getElementById("currentDay").innerHTML = (now.format("dddd, MMMM D YYYY"));
 
-// dayjs().format();
+dayjs().format();
+
+var day = [
+    {id: 0, hour: "8:00", time: "08", meridiem: " am", reminder: ""}, 
+    {id: 1, hour: "9:00", time: "09", meridiem: " am", reminder: ""}, 
+    {id: 2, hour: "10:00", time: "10", meridiem: " am", reminder: ""},
+    {id: 3, hour: "11:00", time: "11", meridiem: " am", reminder: ""},
+    {id: 4, hour: "12:00", time: "12", meridiem: " pm", reminder: ""},
+    {id: 5, hour: "1:00", time: "13", meridiem: " pm", reminder: ""},
+    {id: 6, hour: "2:00", time: "14", meridiem: " pm", reminder: ""},
+    {id: 7, hour: "3:00", time: "15", meridiem: " pm", reminder: ""},
+    {id: 8, hour: "4:00", time: "16", meridiem: " pm", reminder: ""},
+    {id: 9, hour: "5:00", time: "17", meridiem: " pm", reminder: ""},
+    {id: 10, hour: "6:00", time: "18", meridiem: " pm", reminder: ""},
+    {id: 11, hour: "7:00", time: "19", meridiem: " pm", reminder: ""},
+    {id: 12, hour: "8:00", time: "20", meridiem: " pm", reminder: ""},
+    {id: 13, hour: "9:00", time: "21", meridiem: " pm", reminder: ""},
+]
+
 function today() {
     var currentDate = (dayjs().format("dddd, MMMM D YYYY"));
     $("#currentDay").text(currentDate);
 }
 
-
-var day = [
-    {id: 0, hour: "8", time: "8:00", ampm: " am", reminder: ""}, 
-    {id: 1, hour: "9", time: "9:00", ampm: " am", reminder: ""}, 
-    {id: 2, hour: "10", time: "10:00", ampm: " am", reminder: ""},
-    {id: 3, hour: "11", time: "11:00", ampm: " am", reminder: ""},
-    {id: 4, hour: "12", time: "12:00", ampm: " pm", reminder: ""},
-    {id: 5, hour: "1", time: "1:00", ampm: " pm", reminder: ""},
-    {id: 6, hour: "2", time: "2:00", ampm: " pm", reminder: ""},
-    {id: 7, hour: "3", time: "3:00", ampm: " pm", reminder: ""},
-    {id: 8, hour: "4", time: "4:00", ampm: " pm", reminder: ""},
-    {id: 9, hour: "5", time: "5:00", ampm: " pm", reminder: ""},
-    {id: 10, hour: "6", time: "6:00", ampm: " pm", reminder: ""},
-    {id: 11, hour: "7", time: "7:00", ampm: " pm", reminder: ""},
-    {id: 12, hour: "8", time: "8:00", ampm: " pm", reminder: ""},
-    {id: 13, hour: "9", time: "9:00", ampm: " pm", reminder: ""},
-]
-
 function saveRemind() {
     localStorage.setItem("day", JSON.stringify(day));
 }
 
-// function displayRemind() {
-//     day.forEach(function (_currentHour) {
-//         $('#${_currentHour.id}').val(_currentHour.reminder);
-//     })
-// }
+function displayRemind() {
+    day.forEach(function (_currentHour) {
+        $(`#${_currentHour.id}`).val(_currentHour.reminder);
+    })
+}
 
 function init() {
     var storedPlan = JSON.parse(localStorage.getItem("day"));
@@ -44,16 +44,19 @@ function init() {
         }
 
         saveRemind();
-        // displayRemind();
-}
+        displayRemind();
+};
+
+today();
+
 
 day.forEach(function(currentHour) {
-    var hourBlock = $("<form>")
-        .attr({"class": "row"});
+    var hourBlock = $("<form>").attr({
+        "class": "row"});
         $(".container").append(hourBlock);
 
     var hourField = $("<div>")
-        .text('${currentHour.hour}$(currentHour.ampm}')
+        .text(`${currentHour.hour}${currentHour.meridiem}`)
         .attr({"class": "col-md-2 hour"});
 
     var plan = $("<div>")
@@ -95,14 +98,10 @@ day.forEach(function(currentHour) {
 init();
 
 $(".saveBtn").on("click", function(event) {
-    event.preventdefault();
-    var savePlans = $(this).siblings(".description").children("future").attr("id");
-    day[savePlans].reminder = $(this).siblings(".description").children("future").val;
+    event.preventDefault();
+    var savePlans = $(this).siblings(".description").children(".future").attr("id");
+    day[savePlans].reminder = $(this).siblings(".description").children(".future").val();
     console.log(savePlans);
     saveRemind;
-    // displayRemind;
+    displayRemind;
 })
-
-
-today();
-
